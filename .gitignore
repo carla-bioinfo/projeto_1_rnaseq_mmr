@@ -1,0 +1,22 @@
+# Dados brutos (não comitar arquivos grandes)
+data/raw/*
+!data/raw/.gitkeep
+
+# Bibliotecas R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Resultados temporários
+results/figures/*
+results/tables/*
+!results/.gitkeep
+
+# Cache
+.cache/
+__pycache__/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
