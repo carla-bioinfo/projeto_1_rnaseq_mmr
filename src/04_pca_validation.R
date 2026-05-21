@@ -13,6 +13,8 @@ library(tidyverse)
 library(ggplot2)
 
 # ==== 1. CARREGAR DADOS ====
+set.seed(42)
+cat("\nInício Script 04: ", format(Sys.time(), "%d/%m/%Y %H:%M"), "\n\n")
 load("data/expression_matrix_normalized.RData")
 
 # Extrair matriz de contagens normalizada (vst)
@@ -106,3 +108,5 @@ cat("\n=== CONCLUSÃO DA VALIDAÇÃO PCA ===\n")
 cat("✅ dMMR e pMMR aparecem SEPARADOS em PC1\n")
 cat("✅ Variância explicada é ADEQUADA\n")
 cat("✅ Padrão é BIOLOGICAMENTE VÁLIDO\n")
+cat("\n✅ Script 04 finalizado!\n")
+print(sessionInfo())

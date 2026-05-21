@@ -14,6 +14,8 @@ library(pheatmap)
 library(RColorBrewer)
 
 # ==== 1. CARREGAR DADOS ====
+set.seed(42)
+cat("\nInício Script 05: ", format(Sys.time(), "%d/%m/%Y %H:%M"), "\n\n")
 load("data/expression_matrix_normalized.RData")
 
 # Normalizar com VST
@@ -105,3 +107,5 @@ cat("✅ Amostras dMMR agrupam JUNTAS\n")
 cat("✅ Amostras pMMR agrupam JUNTAS\n")
 cat("✅ Separação entre grupos é CLARA\n")
 cat("✅ FASE 1 COMPLETA\n")
+cat("\n✅ Script 05 finalizado!\n")
+print(sessionInfo())

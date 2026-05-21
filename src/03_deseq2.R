@@ -9,6 +9,7 @@
 # ============================================================================
 
 # ==== 1. SETUP ====
+
 library(DESeq2)
 library(tidyverse)
 library(ggplot2)
@@ -63,3 +64,6 @@ cat("Total genes testados:", nrow(res_ordered), "\n")
 cat("Genes significativos:", nrow(sig_genes), "\n")
 cat("Up-regulated:", sum(sig_genes$log2FoldChange > 0), "\n")
 cat("Down-regulated:", sum(sig_genes$log2FoldChange < 0), "\n")
+
+cat("\n✅ Script 03 finalizado!\n")
+print(sessionInfo())
