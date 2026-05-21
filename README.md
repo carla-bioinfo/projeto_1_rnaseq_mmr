@@ -2,9 +2,9 @@
 
 ![R](https://img.shields.io/badge/R-4.0+-blue?style=flat)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat)
-![Dataset](https://img.shields.io/badge/Dataset-TCGA%20COAD-orange?style=flat)
+![Dataset](https://img.shields.io/badge/Dataset-GSE39582-orange?style=flat)
 
-*Análise de expressão diferencial em tumores colorretais com deficiência de MMR*
+*Análise de expressão diferencial em tumores colorretais com deficiência de MMR | Estudante de Bioinformática*
 
 ## 🎯 Objetivo
 
@@ -21,39 +21,49 @@ Análise de **expressão diferencial** em tumores colorretais com:
 
 | Propriedade | Valor |
 |-------------|-------|
-| **Fonte** | TCGA-COAD (The Cancer Genome Atlas) |
-| **Tipo** | RNA-seq (Illumina sequencing) |
-| **Amostras** | ~460 adenocarcinomas de cólon |
-| **Genes** | 20,530 genes proteicos |
+| **Fonte** | GSE39582 (Marisa et al., 2013) |
+| **Tipo** | RNA-seq (Microarray - Affymetrix) |
+| **Amostras** | 566 adenocarcinomas de cólon |
+| **Genes** | ~20k genes |
 | **Status MSI** | Anotado (MSI-H, MSI-L, MSS) |
 
 ## 📁 Estrutura do Projeto
-```
+
 projeto_1_rnaseq_mmr/
+├── src/                          # Scripts R em sequência
+│   ├── 02_preparacao_dados.R     # Download e QC dos dados
+│   ├── 03_deseq2.R               # Análise de expressão diferencial
+│   ├── 04_pca_validation.R       # Validação por PCA
+│   └── 05_clustering.R           # Validação por clustering
+│
 ├── data/
-│   ├── raw/              # Dados originais TCGA
-│   └── processed/        # Dados após QC e filtragem
-├── src/                  # Scripts R para análise
-│   ├── 01_load_data.R
-│   ├── 02_qc_filtering.R
-│   ├── 03_deseq2.R
-│   ├── 04_pca_validation.R
-│   └── 05_clustering.R
-├── notebooks/            # Análise narrativa em Quarto
-│   └── analise_principal.qmd
-├── results/              # Figuras e tabelas geradas
-│   ├── figures/
-│   └── tables/
-├── reports/              # Relatório final em PDF
-│   └── relatorio_completo.pdf
+│   ├── raw/                      # Dados brutos (GEO/TCGA)
+│   └── processed/                # Dados após processamento
+│
+├── results/                       # Saídas geradas automaticamente
+│   ├── figures/                  # Figuras (PNG, PDF)
+│   │   ├── pca_plot_validation.png
+│   │   ├── scree_plot.png
+│   │   ├── heatmap_top100_genes.png
+│   │   └── dendrogram_samples.png
+│   │
+│   └── tables/                   # Tabelas de resultados
+│       ├── deseq2_results_full.csv
+│       ├── deseq2_significant_genes.csv
+│       └── top_genes.csv
+│
+├── relatorio_fase1.Rmd           # Relatório de validação interna
+├── projeto_1_rnaseq_mmr.Rproj    # Projeto RStudio
 └── README.md
-```
+
 ## 🔬 Métodos
 
-- **Normalização**: TMM (Trimmed Mean of M-values)
+- **Normalização**: Median Ratio Normalization (DESeq2 built-in)
 - **Filtragem**: Genes com CPM > 1 em ≥3 amostras
 - **Análise de Expressão Diferencial**: DESeq2
 - **Validação**: PCA + Clustering hierárquico + Heatmaps
+
+**Nota técnica**: A normalização é aplicada internamente por DESeq2 via função `estimateSizeFactors()`, que corrige vieses de profundidade de sequenciamento usando o método Median Ratio.
 
 ## 📈 Resultados Esperados
 
@@ -64,26 +74,28 @@ projeto_1_rnaseq_mmr/
 
 ## 🚀 Como Rodar
 
-### Opção 1: No RStudio (Recomendado)
+### Opção 1: Via linha de comando (Recomendado)
+
+Execute os scripts em sequência:
 
 ```r
-# Abra o arquivo
-open("notebooks/analise_principal.qmd")
-
-# Ou execute no RStudio:
-# File → Open → notebooks/analise_principal.qmd
-# Clique em "Render"
+source("src/02_preparacao_dados.R")    # Carregar dados do GEO
+source("src/03_deseq2.R")              # Análise de expressão diferencial
+source("src/04_pca_validation.R")      # Validação por PCA
+source("src/05_clustering.R")          # Validação por clustering
 ```
 
-### Opção 2: Via linha de comando (R)
+### Opção 2: Script por script no RStudio
 
-```r
-source("src/01_load_data.R")
-source("src/02_qc_filtering.R")
-source("src/03_deseq2.R")
-source("src/04_pca_validation.R")
-source("src/05_clustering.R")
-```
+Abra cada arquivo em `src/` no RStudio e execute com:
+- Windows/Linux: `Ctrl + Shift + Enter`
+- Mac: `Cmd + Shift + Enter`
+
+**Ordem importa!** Execute nesta sequência:
+1. `02_preparacao_dados.R` (primeiro — cria dados)
+2. `03_deseq2.R` (precisa dos dados do passo 1)
+3. `04_pca_validation.R` (precisa dos resultados DESeq2)
+4. `05_clustering.R` (usa dados normalizados)
 
 ## 📦 Dependências
 
@@ -97,12 +109,14 @@ BiocManager::install(c("DESeq2", "edgeR", "limma", "ComplexHeatmap"))
 
 ## 📚 Referências
 
-- TCGA Consortium. (2012). Comprehensive molecular characterization of human colon and rectal cancer. *Nature*, 487(7407), 330-337.
+- Marisa, L., et al. (2013). Gene expression classification of colon cancer into molecular subtypes: Characterization, validation, and prognostic value. *Gut*, 62(5), 683-694.
 - Love, M. I., Huber, W., & Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. *Genome Biology*, 15(12), 550.
+- TCGA Consortium. (2012). Comprehensive molecular characterization of human colon and rectal cancer. *Nature*, 487(7407), 330-337.
 
 ## 👤 Autora
 
-**Carla Rodrigues de Moraes**
+**Carla Rodrigues de Moraes** — Estudante de Bioinformática
+
 - 📧 carla.bioinfo@email.com
 - 🔗 [LinkedIn](https://linkedin.com/in/carla-bioinfo)
 - 💻 [GitHub](https://github.com/carla-bioinfo)
@@ -113,4 +127,13 @@ MIT License
 
 ---
 
-**Status**: Análise em andamento | **Fase**: 1 (Análise interna)
+**Status**: Análise em andamento | **Fase**: 1 (Validação interna)
+
+### 🎓 Aprendizados Deste Projeto
+
+- Descobri confusão entre normalização **TMM (edgeR)** vs **Median Ratio (DESeq2)**
+- Aprendi importância de documentação **honesta** vs aspiracional
+- Entendi valor crítico da **validação interna** (FASE 1)
+- Validei separação entre grupos usando **PCA e clustering**
+
+- 
