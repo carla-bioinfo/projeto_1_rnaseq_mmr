@@ -3,6 +3,9 @@
 # Etapa 2: Preparação dos Dados (GEO - alternativa rápida)
 # ==============================================================================
 
+set.seed(42)
+cat("\nInício: ", format(Sys.time(), "%d/%m/%Y %H:%M"), "\n\n")
+
 library(GEOquery)
 library(Biobase)
 library(tidyverse)
@@ -32,3 +35,4 @@ print(head(pData(eset)))
 # Salvar para uso posterior
 save(eset, file = "data/processed/eset_gse39582.RData")
 cat("\n✓ Dados salvos em data/processed/eset_gse39582.RData\n")
+print(sessionInfo())
