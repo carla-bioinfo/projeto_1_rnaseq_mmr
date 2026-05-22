@@ -136,4 +136,4 @@ MIT License
 - Entendi valor crítico da **validação interna** (FASE 1)
 - Validei separação entre grupos usando **PCA e clustering**
 
-- 
+
