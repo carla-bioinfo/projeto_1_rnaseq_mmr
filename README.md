@@ -117,7 +117,7 @@ BiocManager::install(c("DESeq2", "edgeR", "limma", "ComplexHeatmap"))
 
 **Carla Rodrigues de Moraes** — Estudante de Bioinformática
 
-- 📧 carla.bioinfo@email.com
+- 📧 carlabio.biomol@gmail.com
 - 🔗 [LinkedIn](https://linkedin.com/in/carla-bioinfo)
 - 💻 [GitHub](https://github.com/carla-bioinfo)
 
