@@ -1,17 +1,8 @@
-# Dados brutos (não comitar arquivos grandes)
-data/raw/*
-!data/raw/.gitkeep
-
 # Bibliotecas R
 .Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
-
-# Resultados temporários
-results/figures/*
-results/tables/*
-!results/.gitkeep
 
 # Cache
 .cache/
@@ -21,4 +12,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .Rproj.user
-data/processed/*.RData
+
+# Dados brutos muito grandes (opcional)
+data/raw/*
+!data/raw/.gitkeep
