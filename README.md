@@ -1,139 +1,93 @@
-# Projeto 1 — Caracterização Transcriptômica MMR/Lynch
+# Projeto 1: Caracterização Transcriptômica MMR/Lynch
 
-![R](https://img.shields.io/badge/R-4.0+-blue?style=flat)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat)
-![Dataset](https://img.shields.io/badge/Dataset-GSE39582-orange?style=flat)
+**Análise de expressão gênica em adenocarcinomas colorretais com deficiência de reparo de DNA (dMMR)**
 
-*Análise de expressão diferencial em tumores colorretais com deficiência de MMR | Estudante de Bioinformática*
+## 📋 Status do Projeto
 
-## 🎯 Objetivo
-
-Análise de **expressão diferencial** em tumores colorretais com:
-- **dMMR/MSI-H** (deficientes em Mismatch Repair / Microssatélite Instável Alto)
-- **pMMR/MSS** (proficientes em Mismatch Repair / Microssatélite Estável)
-
-### Perguntas de Pesquisa
-- Quais genes diferenciam tumores dMMR de pMMR?
-- Há padrões de co-expressão biologicamente relevantes?
-- Os achados são reproduzíveis em múltiplos métodos?
-
-## 📊 Conjunto de Dados
-
-| Propriedade | Valor |
-|-------------|-------|
-| **Fonte** | GSE39582 (Marisa et al., 2013) |
-| **Tipo** | RNA-seq (Microarray - Affymetrix) |
-| **Amostras** | 566 adenocarcinomas de cólon |
-| **Genes** | ~20k genes |
-| **Status MSI** | Anotado (MSI-H, MSI-L, MSS) |
-
-## 📁 Estrutura do Projeto
-
-projeto_1_rnaseq_mmr/
-├── src/                          # Scripts R em sequência
-│   ├── 02_preparacao_dados.R     # Download e QC dos dados
-│   ├── 03_deseq2.R               # Análise de expressão diferencial
-│   ├── 04_pca_validation.R       # Validação por PCA
-│   └── 05_clustering.R           # Validação por clustering
-│
-├── data/
-│   ├── raw/                      # Dados brutos (GEO/TCGA)
-│   └── processed/                # Dados após processamento
-│
-├── results/                       # Saídas geradas automaticamente
-│   ├── figures/                  # Figuras (PNG, PDF)
-│   │   ├── pca_plot_validation.png
-│   │   ├── scree_plot.png
-│   │   ├── heatmap_top100_genes.png
-│   │   └── dendrogram_samples.png
-│   │
-│   └── tables/                   # Tabelas de resultados
-│       ├── deseq2_results_full.csv
-│       ├── deseq2_significant_genes.csv
-│       └── top_genes.csv
-│
-├── relatorio_fase1.Rmd           # Relatório de validação interna
-├── projeto_1_rnaseq_mmr.Rproj    # Projeto RStudio
-└── README.md
-
-## 🔬 Métodos
-
-- **Normalização**: Median Ratio Normalization (DESeq2 built-in)
-- **Filtragem**: Genes com CPM > 1 em ≥3 amostras
-- **Análise de Expressão Diferencial**: DESeq2
-- **Validação**: PCA + Clustering hierárquico + Heatmaps
-
-**Nota técnica**: A normalização é aplicada internamente por DESeq2 via função `estimateSizeFactors()`, que corrige vieses de profundidade de sequenciamento usando o método Median Ratio.
-
-## 📈 Resultados Esperados
-
-- ✅ Identificação de genes significativamente alterados
-- ✅ Separação clara entre grupos MSI-H e MSS
-- ✅ Padrões de co-expressão biologicamente interpretáveis
-- ✅ Validação de robustez metodológica
-
-## 🚀 Como Rodar
-
-### Opção 1: Via linha de comando (Recomendado)
-
-Execute os scripts em sequência:
-
-```r
-source("src/02_preparacao_dados.R")    # Carregar dados do GEO
-source("src/03_deseq2.R")              # Análise de expressão diferencial
-source("src/04_pca_validation.R")      # Validação por PCA
-source("src/05_clustering.R")          # Validação por clustering
-```
-
-### Opção 2: Script por script no RStudio
-
-Abra cada arquivo em `src/` no RStudio e execute com:
-- Windows/Linux: `Ctrl + Shift + Enter`
-- Mac: `Cmd + Shift + Enter`
-
-**Ordem importa!** Execute nesta sequência:
-1. `02_preparacao_dados.R` (primeiro — cria dados)
-2. `03_deseq2.R` (precisa dos dados do passo 1)
-3. `04_pca_validation.R` (precisa dos resultados DESeq2)
-4. `05_clustering.R` (usa dados normalizados)
-
-## 📦 Dependências
-
-```r
-# CRAN
-install.packages(c("tidyverse", "ggplot2", "pheatmap"))
-
-# Bioconductor
-BiocManager::install(c("DESeq2", "edgeR", "limma", "ComplexHeatmap"))
-```
-
-## 📚 Referências
-
-- Marisa, L., et al. (2013). Gene expression classification of colon cancer into molecular subtypes: Characterization, validation, and prognostic value. *Gut*, 62(5), 683-694.
-- Love, M. I., Huber, W., & Anders, S. (2014). Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. *Genome Biology*, 15(12), 550.
-- TCGA Consortium. (2012). Comprehensive molecular characterization of human colon and rectal cancer. *Nature*, 487(7407), 330-337.
-
-## 👤 Autora
-
-**Carla Rodrigues de Moraes** — Estudante de Bioinformática
-
-- 📧 carlabio.biomol@gmail.com
-- 🔗 [LinkedIn](https://linkedin.com/in/carla-bioinfo)
-- 💻 [GitHub](https://github.com/carla-bioinfo)
-
-## 📄 License
-
-MIT License
+| Fase | Descrição | Status | Data |
+|---|---|---|---|
+| **1-5** | Preparação e exploração inicial | ✅ Completo | Janeiro-Maio 2026 |
+| **6** | Validação Interna (DESeq2, edgeR, limma) | ✅ Completo | 25/05/2026 |
+| **7** | Validação Externa (Literatura, GO, Sobrevida) | ⏳ Planejado | Junho 2026 |
+| **8** | Caracterização Molecular Final | ⏳ Planejado | Junho 2026 |
 
 ---
 
-**Status**: Análise em andamento | **Fase**: 1 (Validação interna)
+## 📊 Visão Geral do Projeto
 
-### 🎓 Aprendizados Deste Projeto
+### Objetivo
+Caracterizar a assinatura transcriptômica de tumores colorretais com **deficiência de reparo de DNA (dMMR)** associados à **Síndrome de Lynch**, identificando genes biomarcadores e padrões de expressão diferenciais entre dMMR e pMMR (reparo normal).
 
-- Descobri confusão entre normalização **TMM (edgeR)** vs **Median Ratio (DESeq2)**
-- Aprendi importância de documentação **honesta** vs aspiracional
-- Entendi valor crítico da **validação interna** (FASE 1)
-- Validei separação entre grupos usando **PCA e clustering**
+### Dataset
+- **Fonte:** GEO - GSE39582 (Marisa et al., 2013)
+- **Amostras:** 585 adenocarcinomas colorretais
+- **Plataforma:** Affymetrix HG-U133 Plus 2.0
+- **Genes:** 54.675 probes
+- **Grupos:** 77 dMMR (Lynch) vs 459 pMMR (esporádicos)
 
+### Genes de Interesse (MMR)
+- MLH1 (Mutator L Homolog 1)
+- MSH2 (MutS Homolog 2)
+- MSH6 (MutS Homolog 6)
+- PMS2 (PMS1 Homolog 2)
+- EPCAM (Epithelial Cell Adhesion Molecule)
 
+---
+
+## 🔬 Metodologia
+
+### Fases de Análise
+
+#### **FASE 1-5: Exploração e Preparação** ✅
+- Download de dados via GEOquery
+- Normalização RMA + ComBat batch correction
+- Análise exploratória inicial
+- Preparação de dados para análise diferencial
+
+#### **FASE 6: Validação Interna** ✅
+
+**Checkpoint 1: Controle de Qualidade Técnico**
+- ✅ Script 04: PCA (Principal Component Analysis)
+  - PC1: 16.39% variância (separa dMMR vs pMMR)
+  - PC2: 10.79% variância (variação biológica adicional)
+  - **Resultado:** Separação clara e validada ✅
+
+- ✅ Script 05: Clustering Hierárquico + Heatmap
+  - Top 100 genes significantes
+  - Dendrograma mostra agrupamento apropriado
+  - Amostras dMMR agrupam juntas
+  - Amostras pMMR agrupam juntas
+  - **Resultado:** Padrão coeso validado ✅
+
+**Checkpoint 2: Concordância entre Métodos**
+
+Três métodos independentes foram comparados:
+
+| Método | Genes Signi
+cat > CHANGELOG.md << 'EOF'
+# Changelog
+
+## [v1.0] - 2026-05-25
+
+### 🎉 LANÇAMENTO: FASE 6 COMPLETA E VALIDADA
+
+#### Adicionado
+- ✅ Scripts 02-08 finalizados
+- ✅ Documentação profissional (3 PDFs)
+- ✅ Tabelas de resultados (8 CSVs)
+- ✅ README.md atualizado com Fase 6
+- ✅ CHANGELOG.md (v1.0)
+
+#### Validação
+- ✅ Checkpoint 1: QC Técnico - PASSOU
+- ✅ Checkpoint 2: Concordância - PASSOU
+- ✅ Overlap: 88-93% (>70%)
+- ✅ Correlação log2FC: 0.86-0.93
+
+#### Resultados Principais
+- DESeq2: 646 genes significantes
+- edgeR: 6.648 genes
+- limma-voom: 6.626 genes
+- Genes consenso (3 métodos): 5.532
+
+**Status:** ✅ FASE 6 COMPLETA E VALIDADA
