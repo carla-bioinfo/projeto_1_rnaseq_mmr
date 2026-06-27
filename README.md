@@ -221,7 +221,7 @@ projeto_1_rnaseq_mmr/
 - 👨‍🎓 Estudante de Biomedicina + Data Science
 - 🧬 Especialização: Síndrome de Lynch, Genes MMR
 - 🐱 GitHub: [@carla-bioinfo](https://github.com/carla-bioinfo)
-- 📧 bioinfo@keep-os
+- 📧 carlabio.biomol@gmail.com
 
 ---
 
