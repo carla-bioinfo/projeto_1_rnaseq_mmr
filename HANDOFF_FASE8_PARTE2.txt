@@ -1,0 +1,45 @@
+🎯 HANDOFF FASE 8 PARTE 1 → FASE 8 PARTE 2
+Data: 27/06/2026 | Status: PARTE 1 ✅ COMPLETA
+
+📌 O QUE FOI FEITO (FASE 8 PARTE 1)
+✅ Probe aggregation: 615 → 450 genes únicos
+✅ Metodologia: MEDIANA do log2FC por gene (documentada)
+✅ Validação: 0 duplicatas, 0 NAs, 91% de sucesso
+✅ Arquivos gerados:
+   - FASE8_genes_aggregated_full.csv (450 genes com estatísticas)
+   - FASE8_gene_symbols_final.txt (450 símbolos para EnrichR)
+
+🧬 DESCOBERTAS PRINCIPAIS
+✅ Fenótipo "HOT" confirmado:
+   - KISS1R (p=1.31e-199) — gene mais significante
+   - JAK2 (p=2.99e-120) — sinalização citocina
+   - HLA-DQA1 — apresentação antígeno
+   - CAB39L — metabolismo
+
+🎯 PRÓXIMO PASSO: FASE 8 PARTE 2 — VALIDAÇÃO EXTERNA
+Objetivo: Confirmar padrão em GSE17536
+
+3 Sub-passos:
+1. Download GSE17536 (GEOquery em R)
+2. Normalizar dados
+3. Validar 450 genes em novo dataset
+4. Análise de sobrevida
+
+Ferramentas: R, GEOquery, limma, survival
+Tempo estimado: 2-3 horas
+Método: 3 comandos por rodada, você executa, análise conjunta
+
+📊 CONTEXTO
+Dataset original: GSE39582 (585 amostras, 77 dMMR vs 459 pMMR)
+Genes validados: 450 (dos 615 originais)
+Status: Pronto para validação externa
+
+✅ CHECKLIST PRÉ-FASE8-PARTE2
+□ Ler este handoff
+□ Entender probe aggregation
+□ Verificar que FASE8_gene_symbols_final.txt existe
+□ R 4.0.4 testado
+□ GEOquery disponível? (se não, instalar)
+□ Motivação: validar fenótipo em coorte independente
+
+Good luck! 🧬

@@ -1,0 +1,12 @@
+🎯 FASE 8 — VALIDAÇÃO EXTERNA
+Sessão iniciada: 27/06/2026
+
+Objetivo: Validar fenótipo "HOT" (alta imunidade) em GSE17536
+
+Passos esperados:
+1. Download GSE17536 (GEOquery)
+2. Normalizar dados
+3. Validar 561 genes enriquecidos
+4. Análise de sobrevida
+
+Status: Iniciando...
