@@ -217,7 +217,7 @@ dMMR → Instabilidade microsatélite → Carga mutacional ↑ → Neoantígenos
 ---
 
 ## 👤 Autor
-**Punipuni (carla-bioinfo)**
+**Carla Rodriguês de Moraes**
 - Biomedicine + Data Science student
 - Focus: Lynch Syndrome, MMR genes, Genomic AI
 - GitHub: https://github.com/carla-bioinfo
