@@ -1,234 +1,237 @@
-# Projeto 1: Caracterização Transcriptômica MMR/Lynch
-**Análise de expressão gênica em adenocarcinomas colorretais com deficiência de reparo de DNA (dMMR)**
+# RNA-Seq Colorectal Cancer: dMMR vs pMMR Analysis
 
-## 📋 Status do Projeto
-| Fase | Descrição | Status | Data |
-|---|---|---|---|
-| **1-5** | Preparação e exploração inicial | ✅ Completo | Janeiro-Maio 2026 |
-| **6** | Validação Interna (DESeq2, edgeR, limma) | ✅ Completo | 25/05/2026 |
-| **7** | Enriquecimento GO/KEGG/Reactome | ✅ Completo | 27/06/2026 |
-| **8** | Validação Externa (GSE17536, sobrevida) | ⏳ Planejado | Julho 2026 |
-| **9** | Publicação & Manuscript | ⏳ Planejado | Agosto 2026 |
+## 🎯 Objetivo do Projeto
+Analisar assinatura transcriptômica de tumores colorectais com deficiência de Mismatch Repair (dMMR) vs proficientes (pMMR) usando RNA-Seq, identificar fenótipo imunogênico ("HOT") e validar em cohort independente.
 
 ---
 
-## 📊 Visão Geral do Projeto
-### Objetivo
-Caracterizar a assinatura transcriptômica de tumores colorretais com **deficiência de reparo de DNA (dMMR)** associados à **Síndrome de Lynch**, identificando genes biomarcadores, padrões de enriquecimento funcional e potencial terapêutico.
+## 📊 Datasets
 
-### Dataset
-- **Fonte:** GEO - GSE39582 (Marisa et al., 2013)
-- **Amostras:** 585 adenocarcinomas colorretais
-- **Plataforma:** Affymetrix HG-U133 Plus 2.0
-- **Genes:** 54.675 probes
-- **Grupos:** 77 dMMR (Lynch) vs 459 pMMR (esporádicos)
+### GSE39582 (Discovery)
+- **585 amostras** colorectais
+- **77 dMMR** vs **459 pMMR**
+- Plataforma: Affymetrix HG-U133 Plus 2.0
+- Status: ✅ Fases 1-8 Parte 1 COMPLETAS
 
-### Genes de Interesse (MMR)
-- MLH1 (Mutator L Homolog 1)
-- MSH2 (MutS Homolog 2)
-- MSH6 (MutS Homolog 6)
-- PMS2 (PMS1 Homolog 2)
-- EPCAM (Epithelial Cell Adhesion Molecule)
+### GSE17536 (Validation)
+- **177 amostras** colorectais independentes
+- Plataforma: Affymetrix HG-U133 Plus 2.0
+- Status: ✅ Fase 8 Parte 2 COMPLETA
 
 ---
 
-## 🔬 Metodologia
+## 🔄 Pipeline
 
-### **FASE 1-5: Exploração e Preparação** ✅
-- Download de dados via GEOquery
-- Normalização RMA + ComBat batch correction
-- Análise exploratória (PCA, clustering)
-- Preparação para análise diferencial
+### Fase 1-5: QC e DEA
+- ✅ Download e normalização (GEO RMA)
+- ✅ QC (boxplot, PCA, MA-plot)
+- ✅ DEA com DESeq2, edgeR, limma
+- ✅ Integração de 3 métodos
 
-### **FASE 6: Validação Interna** ✅
-**Resultado:** 5.532 genes consenso (88-93% overlap, r=0.86-0.93)
+### Fase 6: Consensus
+- ✅ 5,532 genes consensus (overlap 3 métodos)
 
-Três métodos independentes:
-- **DESeq2:** 646 genes significantes
-- **edgeR:** 6.648 genes significantes
-- **limma-voom:** 6.626 genes significantes
+### Fase 7: Enriquecimento
+- ✅ 561 genes significantes (padj < 0.05)
+- ✅ GO, KEGG, Reactome enriquecimento
+- ✅ Fenótipo "HOT" identificado:
+  - Immune System (p=2.18e-14)
+  - Cytokine Signaling (p=2.32e-11)
+  - Interferon-alpha/beta (p=4.78e-10)
 
-**Validação:**
-- ✅ PCA: PC1 separa dMMR vs pMMR (16.39% variância)
-- ✅ Clustering hierárquico mostra agrupamento claro
-- ✅ Correlação log2FC entre métodos: 0.86-0.93
+### Fase 8 Parte 1: Probe Aggregation ✅
+- ✅ 615 probes → 450 genes únicos
+- ✅ Método: MEDIANA de log2FC (robusto)
+- ✅ P-value: probe com |log2FC| máximo
+- ✅ Validação: 0 duplicatas, 0 NAs
 
-### **FASE 7: Enriquecimento GO/KEGG/Reactome** ✅
+### Fase 8 Parte 2: External Validation ✅
+- ✅ GSE17536 baixado (177 amostras)
+- ✅ 450 genes em novo dataset
+- ✅ Fenótipo HOT CONFIRMADO (reproducível!)
+- ✅ 228 UP, 222 DOWN (balanceado)
 
-**Genes analisados:** 561 gene symbols (91% mapeamento)
-
-**Top Pathways — Reactome 2024:**
-1. **Immune System** (p=2.18e-14) ⭐⭐⭐
-2. **Cytokine Signaling** (p=2.32e-11) ⭐⭐⭐
-3. **Interferon Alpha-Beta Signaling** (p=1.92e-9) ⭐⭐
-4. **Chemokine Receptors** (p=4.11e-9) ⭐⭐
-5. **Interferon Signaling** (p=2.42e-8) ⭐⭐
-
-**Top Pathways — KEGG 2026:**
-1. **Viral Protein-Cytokine Interaction** (p=7.3e-11) ⭐⭐⭐
-2. **Rheumatoid Arthritis** (p=2.04e-9) ⭐⭐
-3. **Chemokine Signaling** (p=2.31e-9) ⭐⭐
-4. **HSV-1 Infection** (p=2.87e-8) ⭐⭐
-5. **Cytokine-Cytokine Receptor** (p=2.81e-7) ⭐⭐
-
-**Genes Chave Identificados:**
-- **Citocinas:** IL-1β, IL-6, IL-18, TNF-α
-- **Quimiocinas:** CXCL8, CXCL10, CXCL11, CCL5, CCL4
-- **Interferon:** STAT1, JAK2, MX1, OAS2, ISG15
-- **Antígenos:** HLA-DMA, HLA-DMB, HLA-DQA1, CD74
-- **Citotoxicidade:** GNLY, GZMK, PRF1, NKG7
-
-**Interpretação:** Tumores dMMR exibem fenótipo "HOT" (Hot, Inflamed, Primed) com ativação imune e resposta interferon elevada.
+### Fase 8 Parte 3: Survival Analysis ⏳
+- ⏳ Análise de sobrevida (OS/DFS)
+- ⏳ Kaplan-Meier curves
+- ⏳ Cox regression
+- ⏳ Validação de poder preditivo
 
 ---
 
-## 🧬 Descobertas Principais
+## 🔬 Top 10 Genes (Fase 8)
 
-### **Fenótipo "Hot Tumor" em dMMR**
-Deficiência MMR → Neoantigênios → Resposta Interferon/Citocina → Tumor Inflamado
-✅ **Implicações Clínicas:**
-- Candidatos para imunoterapia (checkpoint inhibitors)
-- Alto TMB (Tumor Mutational Burden)
-- Expressão elevada de PD-L1 esperada
-- Potencial para anti-PD-1/CTLA-4
+| Gene | log2FC | p-value | Probes | Função |
+|------|--------|---------|--------|--------|
+| KISS1R | -1.94 | 1.31e-199 | 1 | Supressor tumoral |
+| CAB39L | +1.03 | 4.53e-121 | 3 | Proteína sinalizadora |
+| JAK2 | +1.15 | 2.99e-120 | 2 | Sinalização citocina ⭐ |
+| C3orf85 | +1.17 | 5.58e-117 | 1 | Proteína desconhecida |
+| HLA-DQA1 | +0.03 | 1.06e-111 | 2 | MHC Class II ⭐ |
+| CES1 | +1.97 | 1.90e-107 | 1 | Carboxilesterase |
+| ANP32E | +1.41 | 7.65e-104 | 2 | Regulador transcricional |
+| HCAR3 | +1.76 | 4.92e-100 | 1 | Receptor G-protein |
+| ETV5 | +1.16 | 3.55e-98 | 1 | Fator transcricional |
+| OSR2 | +1.05 | 5.14e-98 | 1 | Fator transcricional |
 
-### **Assinatura Secundária, Não Primária**
-- MLH1, MSH2, MSH6, PMS2, EPCAM **não são diferencialmente expressos**
-- A assinatura é **resposta ao defeito**, não defeito em si
-- Genes operacionais (imunológicos) alterados, não estruturais
+⭐ = Relacionado a imunossurveillância / sinalização citocina
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura do Repositório
 projeto_1_rnaseq_mmr/
 
-├── src/
+├── data/
 
-│   ├── 00_metodologia.R
+│   ├── GSE39582/          ← Expression matrix + phenotypes
 
-│   ├── 02_preparacao_dados.R
+│   └── GSE17536/          ← Validation dataset (Windows)
 
-│   ├── 03_deseq2.R
-
-│   ├── 04_pca_validation.R
-
-│   ├── 05_clustering.R
-
-│   └── 07_enrichment_go_kegg.py
+│
 
 ├── results/
 
-│   ├── figures/
-
-│   │   └── [gráficos PCA, clustering, heatmaps]
-
 │   ├── tables/
 
-│   │   ├── deseq2_significant_genes.csv
+│   │   ├── FASE8_genes_aggregated_full.csv      (450 genes)
 
-│   │   ├── edger_genes_significant.csv
+│   │   └── FASE8_gene_symbols_final.txt         (símbolos)
 
-│   │   ├── limma_genes_significant.csv
+│   ├── figures/           ← PCA, vulcano, heatmaps
 
-│   │   ├── fase6_genes_consenso.csv
+│   ├── enrichment/        ← GO, KEGG, Reactome
 
-│   │   ├── genes_for_enrichR.txt
+│   └── FASE8_PARTE2_RESUMO_VALIDACAO.csv      (validação GSE17536)
 
-│   │   └── genes_for_enrichment_full.csv
+│
 
-│   ├── enrichment/
+├── src/
 
-│   │   ├── Reactome_Pathways_2024_table.txt
+│   ├── FASE1_download_and_qc.R
 
-│   │   └── KEGG_2026_table.txt
+│   ├── FASE2_normalization.R
 
-│   └── relatorio_fase1_validacao_interna.html
+│   ├── FASE3_quality_control.R
 
-├── FASE_7_RELATORIO_ENRIQUECIMENTO.md
+│   ├── FASE4_dea_deseq2_edger_limma.R
 
-├── README.md
+│   ├── FASE5_dea_integration.R
 
-├── CHANGELOG.md
+│   ├── FASE6_consensus_genes.R
 
-└── LICENSE.R
+│   ├── FASE7_enrichment_analysis.R
+
+│   ├── FASE8_aggregate_probes_to_genes.R
+
+│   └── FASE8_PARTE3_survival_analysis.R (próximo)
+
+│
+
+├── FASE8_PARTE2_DOCUMENTACAO.md  ← O que foi feito
+
+├── HANDOFF_FASE8_PARTE3.md       ← Guia próxima etapa
+
+└── README.md                      ← Este arquivo
 ---
 
-## 📊 Métricas Resumidas
+## 🚀 Como Executar
+
+### Próxima Sessão: Fase 8 Parte 3
+```bash
+cd ~/projeto_1_rnaseq_mmr
+git pull origin main                    # atualizar
+cat HANDOFF_FASE8_PARTE3.md             # ler guia
+# Depois: executar script survival no Windows ou Linux
+```
+
+### Quick Status Check
+```bash
+cd ~/projeto_1_rnaseq_mmr
+git log --oneline -5                    # histórico
+ls -la results/FASE8*                   # arquivos Fase 8
+cat HANDOFF_FASE8_PARTE3.md | head -20  # próximos passos
+```
+
+---
+
+## 🧬 Interpretação Biológica
+
+### Fenótipo "HOT" (Imunogênico)
+Confirmado em GSE39582 (Fase 7) e **validado** em GSE17536 (Fase 8 Parte 2):
+
+**Genes principais:**
+- **JAK2, STAT1**: Sinalização Interferon
+- **CXCL8, CXCL10**: Quimiocinas pró-inflamatórias
+- **IL-6**: Citocina pró-inflamatória
+- **GNLY, NKG7, PRF1**: Citotoxicidade (NK cells, CTLs)
+- **HLA-DQA1**: Apresentação antigênica
+
+**Mecanismo:**
+dMMR → Instabilidade microsatélite → Carga mutacional ↑ → Neoantígenos ↑ → Infiltração imune ↑ → Fenótipo "HOT"
+
+**Próximo passo:** Validar se esse padrão prediz sobrevida melhor (Fase 8 Parte 3)
+
+---
+
+## 📊 Estatísticas Resumidas
 
 | Métrica | Valor |
 |---------|-------|
-| Genes DEG (consenso) | 5.532 |
-| Genes para enriquecimento | 561 |
-| Taxa mapeamento | 91% |
-| Pathways significantes (Reactome) | >100 |
-| Pathways significantes (KEGG) | >30 |
-| Top pathway p-value | 2.18e-14 |
-| Overlap DESeq2-edgeR | 88-93% |
-| Correlação log2FC | 0.86-0.93 |
+| Genes únicos finais | 450 |
+| Genes UP | 228 |
+| Genes DOWN | 222 |
+| p-value mínimo | 1.31e-199 |
+| log2FC máximo | +2.674 |
+| log2FC mínimo | -3.093 |
+| GSE39582 amostras | 585 |
+| GSE17536 amostras | 177 |
+| Total validado | 762 amostras |
 
 ---
 
-## 🎯 Próximas Etapas
+## 🔧 Dependências Técnicas
 
-### **FASE 8: Validação Externa** (Julho 2026)
-- [ ] Download GSE17536 (Marisa et al., cohort independente)
-- [ ] Validar top genes (CXCL8, IL-6, STAT1)
-- [ ] Análise de sobrevida vs assinatura imune
-- [ ] Correlação com PD-L1, TMB, MSI status
-- [ ] Integração com dados de tumor microenvironment
+### Windows (✅ Funcionando)
+- R 4.5.2
+- GEOquery ✅
+- Biobase ✅
+- BiocGenerics ✅
+- survival (para Fase 8.3)
+- survminer (para Fase 8.3)
 
-### **FASE 9: Publicação** (Agosto 2026)
-- [ ] Preparar manuscript para BMC Cancer / Cancer Immunology Research
-- [ ] Gráficos profissionais (ggplot2, ComplexHeatmap)
-- [ ] Suplementar com tabelas de genes
-- [ ] Discussão: implicações para imunoterapia em Lynch
-- [ ] Preprint em bioRxiv
-
----
-
-## 🛠️ Ferramentas & Linguagens
-
-| Ferramenta | Versão | Uso |
-|-----------|--------|-----|
-| R | 4.0.4 | Análise estatística |
-| Python | 3.9.2 | Scripts auxiliares |
-| DESeq2 | BioConductor | Análise diferencial |
-| edgeR | BioConductor | Validação |
-| limma | BioConductor | Validação |
-| enrichR | API | Enriquecimento funcional |
-| Linux | Debian Bullseye | Execução |
+### Linux (⏳ Em progresso)
+- R 4.0.4
+- GEOquery ❌ (dependências de sistema não resolvidas)
+- Workaround: Usar Windows, sincronizar via GitHub
 
 ---
 
-## 📚 Referências & Bases de Dados
+## 📚 Referências
 
-### **Dados Clínicos**
-- GEO GSE39582: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE39582
-- Marisa et al. (2013): Gastric, Liver, & Bowel Cancer
-
-### **Bancos de Dados**
-- **enrichR:** https://maayanlab.cloud/Enrichr/
-- **ClinVar:** https://www.ncbi.nlm.nih.gov/clinvar/ (variantes MMR)
-- **InSiGHT:** https://www.insight-group.org/ (Lynch-específico)
-- **GTEx:** https://gtexportal.org/home/ (expresão normal)
-- **COSMIC:** https://cancer.sanger.ac.uk/cosmic (mutações somáticas)
+- **GEO**: https://www.ncbi.nlm.nih.gov/geo/
+- **DESeq2**: Love MI, et al. Genome Biol. 2014
+- **edgeR**: Robinson MD, et al. Bioinformatics. 2010
+- **limma**: Ritchie ME, et al. Nucleic Acids Res. 2015
+- **Enrichment**: https://www.enrichr.org/
 
 ---
 
-## 👤 Autora & Contato
-
-**Carla Rodrigues de Moraes**
-- 👨‍🎓 Estudante de Biomedicina + Data Science
-- 🧬 Especialização: Síndrome de Lynch, Genes MMR
-- 🐱 GitHub: [@carla-bioinfo](https://github.com/carla-bioinfo)
-- 📧 carlabio.biomol@gmail.com
+## 👤 Autor
+**Punipuni (carla-bioinfo)**
+- Biomedicine + Data Science student
+- Focus: Lynch Syndrome, MMR genes, Genomic AI
+- GitHub: https://github.com/carla-bioinfo
 
 ---
 
-## 📄 Licença
-MIT License — Veja LICENSE.R para detalhes
+## 📝 Changelog
+
+- **2026-06-29**: Fase 8 Parte 2 COMPLETA (GSE17536 validation)
+- **2026-06-29**: Fase 8 Parte 1 COMPLETA (Probe aggregation, 450 genes)
+- **2026-06-xx**: Fase 7 COMPLETA (Enrichment analysis, fenótipo HOT)
+- **2026-06-xx**: Fase 6 COMPLETA (5,532 consensus genes)
 
 ---
 
-**Última atualização:** 27/06/2026 (Fase 7 Completa)  
-**Status:** ✅ Pronto para Fase 8 (Validação Externa)
+**Próxima etapa: Fase 8 Parte 3 (Survival Analysis) ⏳🚀**
+
